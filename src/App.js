@@ -60,7 +60,7 @@ const TokenFactory = () => {
             const formattedBalance = ethers.formatUnits(balance, 18);  
             setAgcBalance(formattedBalance); 
 
-            const tokenFactoryAddress = '0xbf2dAc07c8D430F242762da826512251Fed03330'; 
+            const tokenFactoryAddress = '0x5CE6E2C5BCfF321Da9A7d11D7884153b1dDA9a92'; 
             const tokenFactoryContract = new ethers.Contract(tokenFactoryAddress, TokenFactoryArtifact.abi, signer);
             
             setContract(tokenFactoryContract);
@@ -161,7 +161,7 @@ const createToken = async () => {
 
     const checkContractBalance = async () => {
     try {
-        const contractAddress = '0xbf2dAc07c8D430F242762da826512251Fed03330'; 
+        const contractAddress = '0x5CE6E2C5BCfF321Da9A7d11D7884153b1dDA9a92'; 
         const provider = new ethers.BrowserProvider(window.ethereum);
         
         const balance = await provider.getBalance(contractAddress);
@@ -181,7 +181,7 @@ const createToken = async () => {
 
     const withdrawFees = async () => {
     try {
-        const tokenFactoryAddress = '0xbf2dAc07c8D430F242762da826512251Fed03330'; 
+        const tokenFactoryAddress = '0x5CE6E2C5BCfF321Da9A7d11D7884153b1dDA9a92'; 
         const provider = new ethers.BrowserProvider(window.ethereum);
 
         const contractBalance = await provider.getBalance(tokenFactoryAddress);

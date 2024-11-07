@@ -69,7 +69,6 @@ const TokenFactory = () => {
             setOwner(ownerAddress);
 
             console.log("Wallet connected:", account);
-            console.log("Contract owner:", ownerAddress);
         } catch (error) {
             console.error("Error connecting to wallet:", error.message);
             setError("Failed to connect to wallet: " + error.message);

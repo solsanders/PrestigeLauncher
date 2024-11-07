@@ -10,8 +10,14 @@ const TokenPriceTracker = () => {
         const fetchPrice = async () => {
             try {
                 const response = await axios.get('https://token-price-backend.vercel.app/api/price');
-                const price = response.data.data.AGC.quote.USD.price;
-                setAgcPrice(price);
+                
+                // Ensure the response has the expected structure
+                if (response.data && response.data.price !== undefined) {
+                    setAgcPrice(response.data.price);
+                } else {
+                    throw new Error('Price data is missing');
+                }
+
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching token price:', error);
@@ -26,7 +32,7 @@ const TokenPriceTracker = () => {
     }, []);
 
     return (
-        <div className="price-section" style={{ fontSize: '16px', marginBottom: '10px', color: '#333' }}>
+        <div className="price-section" style={{ fontSize: '16px', marginBottom: '10px', color: '#333', textAlign: 'center' }}>
             <strong style={{ color: '#969696' }}>Live AGC Price: </strong>
             {loading ? (
                 <span> Loading...</span>

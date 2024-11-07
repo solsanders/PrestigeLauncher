@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import TokenFactoryArtifact from './artifacts/contracts/TokenFactory.sol/TokenFactory.json';
 import './App.css'; 
-import { db } from './firebase';
-import { collection, addDoc } from 'firebase/firestore';
 import TokenPriceTracker from './TokenPriceTracker';
 const ethers = require("ethers");
 
@@ -108,21 +106,6 @@ const TokenFactory = () => {
         setNewTokenAddress(tokenAddress);
 
         await checkTokenBalance(tokenAddress, account);
-  
-        
-        await addDoc(collection(db, "tokens"), {
-          name: tokenName,
-          symbol: tokenSymbol,
-          address: tokenAddress,
-          imageUrl: tokenImageUrl,
-          description: projectDescription,
-          supply: initialSupply,
-          createdAt: new Date().toISOString(),
-          createdBy: account,
-          upvotes: 0,
-          downvotes: 0
-        });
-        console.log("Token details saved to Firestore");
       }
       await refreshBalance();
     } catch (error) {
@@ -478,6 +461,5 @@ return (
         )}
     </div>
 )};
-
 
 export default TokenFactory;

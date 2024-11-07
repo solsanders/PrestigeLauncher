@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import TokenFactoryArtifact from './artifacts/contracts/TokenFactory.sol/TokenFactory.json';
 import './App.css'; 
 import { db } from './firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import html2canvas from 'html2canvas';
 const ethers = require("ethers");
 
 const TokenFactory = () => {
@@ -16,8 +15,7 @@ const TokenFactory = () => {
     const [owner, setOwner] = useState('');
     const [newTokenAddress, setNewTokenAddress] = useState(''); 
     const [userTokenBalance, setUserTokenBalance] = useState(''); 
-    const [contractBalance, setContractBalance] = useState('0');
-	const [isTokenCreated, setIsTokenCreated] = useState(false); 
+    const [contractBalance, setContractBalance] = useState('0'); 
 	const [isLoading, setIsLoading] = useState(false); 
 	const [agcBalance, setAgcBalance] = useState('');  
 	const [tokenImageUrl, setTokenImageUrl] = useState('');
@@ -81,30 +79,30 @@ const TokenFactory = () => {
 
 
 
-const createToken = async () => {
-    if (!contract) {
-      console.error("Contract not found");
-      setError("Contract not found. Please connect your wallet.");
-      return;
-    }
-  
-    try {
-      setIsLoading(true);
-      const supply = ethers.parseUnits(initialSupply.toString(), 18);
-      const tx = await contract.createToken(tokenName, tokenSymbol, supply, {
-        value: ethers.parseUnits("10", 18),
-      });
-      const receipt = await tx.wait();
-      const parsedLogs = receipt.logs.map(log => {
-        try {
-          return contract.interface.parseLog(log);
-        } catch (e) {
-          return null;
+    const createToken = async () => {
+        if (!contract) {
+        console.error("Contract not found");
+        setError("Contract not found. Please connect your wallet.");
+        return;
         }
-      }).filter(log => log !== null);
   
-      const tokenCreatedEvent = parsedLogs.find(log => log.name === 'TokenCreated');
-      if (tokenCreatedEvent) {
+        try {
+        setIsLoading(true);
+        const supply = ethers.parseUnits(initialSupply.toString(), 18);
+        const tx = await contract.createToken(tokenName, tokenSymbol, supply, {
+            value: ethers.parseUnits("10", 18),
+        });
+        const receipt = await tx.wait();
+        const parsedLogs = receipt.logs.map(log => {
+            try {
+            return contract.interface.parseLog(log);
+            } catch (e) {
+            return null;
+            }
+        }).filter(log => log !== null);
+  
+    const tokenCreatedEvent = parsedLogs.find(log => log.name === 'TokenCreated');
+        if (tokenCreatedEvent) {
         const tokenAddress = tokenCreatedEvent.args.tokenAddress;
         setNewTokenAddress(tokenAddress);
 
@@ -135,32 +133,32 @@ const createToken = async () => {
   
 
 
-  const refreshBalance = async () => {
-    if (account) {
-        try {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const balance = await provider.getBalance(account);
-            const formattedBalance = ethers.formatUnits(balance, 18);
-            console.log("Updated AGC balance:", formattedBalance);
-            setAgcBalance(formattedBalance);
-        } catch (error) {
-            console.error("Failed to refresh AGC balance:", error);
+  const refreshBalance = useCallback(async () => {
+        if (account) {
+            try {
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const balance = await provider.getBalance(account);
+                const formattedBalance = ethers.formatUnits(balance, 18);
+                console.log("Updated AGC balance:", formattedBalance);
+                setAgcBalance(formattedBalance);
+            } catch (error) {
+                console.error("Failed to refresh AGC balance:", error);
+            }
         }
-    }
-};
+    }, [account]);
 
             useEffect(() => {
                 if (account) {
                     refreshBalance();
                 }
-            }, [account]);
-
-
+            }, [account, refreshBalance]);
+    
             useEffect(() => {
                 if (newTokenAddress) {
                     refreshBalance();
                 }
-            }, [newTokenAddress]);
+            }, [newTokenAddress, refreshBalance]);
+    
 
 
     const checkTokenBalance = async (tokenAddress, account) => {
@@ -341,7 +339,7 @@ return (
                                         if (Number(value) > MAX_SUPPLY) {
                                             setError(`Token supply cannot exceed ${MAX_SUPPLY.toLocaleString()}`);
                                         } else {
-                                            setError(''); // Clear error if valid
+                                            setError(''); 
                                         }
                                         setInitialSupply(value);
                                     }
@@ -427,7 +425,7 @@ return (
                         )}
                     </div>
 
-                    {/* New Token Details with Labels Above Values */}
+                    {/* New Token Details */}
                     <div className="attribute-wrapper">
                         <span className="token-attribute">Token Name:</span>
                         <span className="attribute-text"> {tokenName}</span>
@@ -457,7 +455,6 @@ return (
                         </div>
                     )}
                     
-                    {/* Centered Button Wrapper */}
                     <div className="button-wrapper">
                         <button onClick={addTokenToMetaMask} className="add-to-metamask-btn">Add Token to MetaMask</button>
                     </div>

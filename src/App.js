@@ -287,7 +287,8 @@ return (
         <p className="small-text">Made by PrestigeNode</p>
         <button 
             className={`connect-wallet ${account ? 'connected' : ''}`} 
-            onClick={connectWallet}>
+            onClick={connectWallet}
+        >
             {account ? "Connected" : "Connect Wallet"}
         </button>
         
@@ -299,95 +300,95 @@ return (
         
         {agcBalance && <p className="account-info">Your Balance: {agcBalance} AGC</p>}
 
-        <div className="token-form">
-            {!newTokenAddress && (
-                <>
-                    {/* Header Section */}
-                    <div className="form-header-container">
-                        <h2 className="form-header">Create a New Token</h2>
-                        <span className="fee-text">(Fee: 10 AGC)</span>
-                    </div>
+        {!newTokenAddress ? (
+            <div className="token-form">
+                {/* Header Section */}
+                <div className="form-header-container">
+                    <h2 className="form-header">Create a New Token</h2>
+                    <span className="fee-text">(Fee: 10 AGC)</span>
+                </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label className="form-label">Token Name</label>
-                            <input
-                                type="text"
-                                placeholder="e.g. Argocoin"
-                                value={tokenName}
-                                onChange={(e) => setTokenName(e.target.value)}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label">Token Symbol</label>
-                            <input
-                                type="text"
-                                placeholder="e.g. AGC"
-                                value={tokenSymbol}
-                                onChange={(e) => setTokenSymbol(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label className="form-label">Token Supply</label>
-                            <input
-                                type="text"
-                                placeholder="e.g. 1000000000"
-                                value={initialSupply}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    const validInteger = /^[0-9]*$/;
-                                    const MAX_SUPPLY = 1e12; // 1 trillion
-
-                                    if (value === '' || validInteger.test(value)) {
-                                        if (Number(value) > MAX_SUPPLY) {
-                                            setError(`Token supply cannot exceed ${MAX_SUPPLY.toLocaleString()}`);
-                                        } else {
-                                            setError(''); 
-                                        }
-                                        setInitialSupply(value);
-                                    }
-                                }}
-                            />
-                            {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
-                        </div>
-                        
-                        <div className="form-group">
-                            <label className="form-label">Logo URL</label>
-                            <input
-                                type="text"
-                                placeholder="e.g. https://example.com/logo.png"
-                                value={tokenImageUrl}
-                                onChange={(e) => setTokenImageUrl(e.target.value)}
-                            />
-                            <div className="upload-section">
-                                <label htmlFor="file-upload" className="upload-link">Upload Image</label>
-                                <input
-                                    id="file-upload"
-                                    type="file"
-                                    accept="image/*"
-                                    style={{ display: 'none' }}
-                                    onChange={handleImageUpload}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="form-group" style={{ width: '100%' }}>
-                        <label className="form-label">Description</label>
-                        <textarea
-                            placeholder="Project Description (optional)"
-                            value={projectDescription}
-                            onChange={(e) => setProjectDescription(e.target.value)}
-                            rows="4"
+                <div className="form-row">
+                    <div className="form-group">
+                        <label className="form-label">Token Name</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. Argocoin"
+                            value={tokenName}
+                            onChange={(e) => setTokenName(e.target.value)}
                         />
                     </div>
+                    <div className="form-group">
+                        <label className="form-label">Token Symbol</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. AGC"
+                            value={tokenSymbol}
+                            onChange={(e) => setTokenSymbol(e.target.value)}
+                        />
+                    </div>
+                </div>
 
-                    <button onClick={createToken}>Create Token</button>
+                <div className="form-row">
+                    <div className="form-group">
+                        <label className="form-label">Token Supply</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. 1000000000"
+                            value={initialSupply}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                const validInteger = /^[0-9]*$/;
+                                const MAX_SUPPLY = 1e12; // 1 trillion
 
-                    {/* Preview Section */}
+                                if (value === '' || validInteger.test(value)) {
+                                    if (Number(value) > MAX_SUPPLY) {
+                                        setError(`Token supply cannot exceed ${MAX_SUPPLY.toLocaleString()}`);
+                                    } else {
+                                        setError(''); 
+                                    }
+                                    setInitialSupply(value);
+                                }
+                            }}
+                        />
+                        {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
+                    </div>
+                    
+                    <div className="form-group">
+                        <label className="form-label">Logo URL</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. https://example.com/logo.png"
+                            value={tokenImageUrl}
+                            onChange={(e) => setTokenImageUrl(e.target.value)}
+                        />
+                        <div className="upload-section">
+                            <label htmlFor="file-upload" className="upload-link">Upload Image</label>
+                            <input
+                                id="file-upload"
+                                type="file"
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                onChange={handleImageUpload}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="form-group" style={{ width: '100%' }}>
+                    <label className="form-label">Description</label>
+                    <textarea
+                        placeholder="Project Description (optional)"
+                        value={projectDescription}
+                        onChange={(e) => setProjectDescription(e.target.value)}
+                        rows="4"
+                    />
+                </div>
+
+                <button onClick={createToken}>Create Token</button>
+
+                {/* Preview Section */}
+                {(tokenName || tokenSymbol || initialSupply || projectDescription) && (
                     <div className="token-preview">
                         <h3>Token Preview</h3>
                         <div className="preview-logo">
@@ -409,17 +410,9 @@ return (
                             <p className="preview-description"><strong className="token-attribute">Description:</strong> <span className="attribute-text">{projectDescription}</span></p>
                         )}
                     </div>
-                </>
-            )}
-            {isLoading && (
-                <div className="loading-overlay">
-                    <div className="loading-spinner"></div>
-                    <p>Deploying your token... Please wait.</p>
-                </div>
-            )}
-        </div>
-
-        {newTokenAddress && (
+                )}
+            </div>
+        ) : (
             <div id="token-details" className="token-created">
                 <h3>New Token Created Successfully!</h3>
                 
@@ -478,6 +471,7 @@ return (
         )}
     </div>
 )};
+
 
 
 

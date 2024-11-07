@@ -3,6 +3,7 @@ import TokenFactoryArtifact from './artifacts/contracts/TokenFactory.sol/TokenFa
 import './App.css'; 
 import { db } from './firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import TokenPriceTracker from './TokenPriceTracker';
 const ethers = require("ethers");
 
 const TokenFactory = () => {
@@ -277,6 +278,11 @@ const TokenFactory = () => {
 
 return (
     <div className="container">
+        {/* Live Token Price Tracker at the top center of the container */}
+        <div className="price-section top-center">
+            <TokenPriceTracker />
+        </div>
+
         <h1>Argochain Token Launcher</h1>
         <p className="small-text">Made by PrestigeNode</p>
         <button 
@@ -411,56 +417,56 @@ return (
                     <p>Deploying your token... Please wait.</p>
                 </div>
             )}
-
-            {newTokenAddress && (
-                <div id="token-details" className="token-created">
-                    <h3>New Token Created Successfully!</h3>
-                    
-                    {/* Display Token Logo */}
-                    <div className="preview-logo">
-                        {uploadedImage ? (
-                            <img src={uploadedImage} alt="Token Logo" className="circle-logo" />
-                        ) : (
-                            <span className="placeholder-logo">No Logo</span>
-                        )}
-                    </div>
-
-                    {/* New Token Details */}
-                    <div className="attribute-wrapper">
-                        <span className="token-attribute">Token Name:</span>
-                        <span className="attribute-text"> {tokenName}</span>
-                    </div>
-
-                    <div className="attribute-wrapper">
-                        <span className="token-attribute">Token Symbol:</span>
-                        <span className="attribute-text"> {tokenSymbol}</span>
-                    </div>
-
-                    <div className="attribute-wrapper">
-                        <span className="token-attribute">Token Address:</span>
-                        <span className="attribute-text"> {newTokenAddress}</span>
-                    </div>
-
-                    <div className="attribute-wrapper">
-                        <span className="token-attribute">Token Supply: </span>
-                        <span className="attribute-text"> 
-                            {Number(userTokenBalance) % 1 === 0 ? Number(userTokenBalance) : Number(userTokenBalance).toFixed(2).replace(/\.0+$/, '')}
-                        </span>
-                    </div>
-
-                    {projectDescription && (
-                        <div className="attribute-wrapper">
-                            <span className="token-attribute">Description:</span>
-                            <span className="attribute-text"> {projectDescription}</span>
-                        </div>
-                    )}
-                    
-                    <div className="button-wrapper">
-                        <button onClick={addTokenToMetaMask} className="add-to-metamask-btn">Add Token to MetaMask</button>
-                    </div>
-                </div>
-            )}
         </div>
+
+        {newTokenAddress && (
+            <div id="token-details" className="token-created">
+                <h3>New Token Created Successfully!</h3>
+                
+                {/* Display Token Logo */}
+                <div className="preview-logo">
+                    {uploadedImage ? (
+                        <img src={uploadedImage} alt="Token Logo" className="circle-logo" />
+                    ) : (
+                        <span className="placeholder-logo">No Logo</span>
+                    )}
+                </div>
+
+                {/* New Token Details */}
+                <div className="attribute-wrapper">
+                    <span className="token-attribute">Token Name:</span>
+                    <span className="attribute-text"> {tokenName}</span>
+                </div>
+
+                <div className="attribute-wrapper">
+                    <span className="token-attribute">Token Symbol:</span>
+                    <span className="attribute-text"> {tokenSymbol}</span>
+                </div>
+
+                <div className="attribute-wrapper">
+                    <span className="token-attribute">Token Address:</span>
+                    <span className="attribute-text"> {newTokenAddress}</span>
+                </div>
+
+                <div className="attribute-wrapper">
+                    <span className="token-attribute">Token Supply: </span>
+                    <span className="attribute-text"> 
+                        {Number(userTokenBalance) % 1 === 0 ? Number(userTokenBalance) : Number(userTokenBalance).toFixed(2).replace(/\.0+$/, '')}
+                    </span>
+                </div>
+
+                {projectDescription && (
+                    <div className="attribute-wrapper">
+                        <span className="token-attribute">Description:</span>
+                        <span className="attribute-text"> {projectDescription}</span>
+                    </div>
+                )}
+                
+                <div className="button-wrapper">
+                    <button onClick={addTokenToMetaMask} className="add-to-metamask-btn">Add Token to MetaMask</button>
+                </div>
+            </div>
+        )}
 
         {account && contract && account.toLowerCase() === owner.toLowerCase() && (
             <div className="owner-actions">
@@ -472,6 +478,11 @@ return (
         )}
     </div>
 )};
+
+
+
+
+
 
 
 export default TokenFactory;

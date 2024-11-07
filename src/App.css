@@ -81,6 +81,17 @@ button:hover,
     text-align: center;
 }
 
+
+.price-section.top-center {
+    text-align: center;
+    width: 100%;
+    margin-top: 0;
+    padding: 10px 0;
+    font-size: 18px;
+    color: #333; /* Ensure this is visible against your background */
+}
+
+
 /* Token Form and Details */
 .token-form,
 .token-details {
@@ -385,23 +396,6 @@ textarea:focus {
 
 
 
-.share-button {
-    margin-top: 20px;
-    padding: 16px 50px;
-    background: linear-gradient(135deg, #4286f4, #32d5f2);
-    color: #fff;
-    border: none;
-    border-radius: 40px;
-    font-size: 1.3rem;
-    font-family: 'Nunito', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.share-button:hover {
-    background: linear-gradient(135deg, #2a6fd4, #1bc3e0);
-}
 
 
 

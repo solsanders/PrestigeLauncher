@@ -35,7 +35,7 @@ const TokenPriceTracker = () => {
         };
 
         fetchPrice();
-        const interval = setInterval(fetchPrice, FETCH_INTERVAL); // Auto-refresh every 4.5 minutes
+        const interval = setInterval(fetchPrice, FETCH_INTERVAL); // Auto-refresh every 10 minutes
         return () => clearInterval(interval); // Clean up interval on component unmount
     }, []);
 

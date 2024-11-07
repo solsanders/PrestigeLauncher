@@ -461,6 +461,13 @@ return (
             </div>
         )}
 
+        {isLoading && (
+            <div className="loading-overlay">
+                <div className="loading-spinner"></div>
+                <p>Deploying your token... Please wait.</p>
+            </div>
+        )}
+
         {account && contract && account.toLowerCase() === owner.toLowerCase() && (
             <div className="owner-actions">
                 <h2>Owner Actions</h2>
@@ -471,12 +478,6 @@ return (
         )}
     </div>
 )};
-
-
-
-
-
-
 
 
 export default TokenFactory;

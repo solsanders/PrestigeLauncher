@@ -6,17 +6,19 @@ const TokenPriceTracker = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const FETCH_INTERVAL = 600000; // 10 minutes
+    const lastFetchKey = 'lastFetchTimestamp';
 
     useEffect(() => {
         const fetchPrice = async () => {
             const cachedData = JSON.parse(localStorage.getItem('agcPriceData'));
             const now = Date.now();
+            const lastFetch = localStorage.getItem(lastFetchKey);
 
-            // Check if cached data exists and is not older than 4.5 minutes
+            // Check if cached data exists and is not older than 10 minutes
             if (cachedData && now - cachedData.timestamp < FETCH_INTERVAL) {
                 setAgcPrice(cachedData.price);
                 setLoading(false);
-            } else {
+            } else if (!lastFetch || now - lastFetch >= FETCH_INTERVAL) {
                 try {
                     const response = await axios.get('https://token-price-backend.vercel.app/api/price');
                     const price = response.data.price; // Ensure this matches the response structure
@@ -24,6 +26,7 @@ const TokenPriceTracker = () => {
 
                     // Cache the data with a timestamp
                     localStorage.setItem('agcPriceData', JSON.stringify({ price, timestamp: now }));
+                    localStorage.setItem(lastFetchKey, now.toString());
 
                     setLoading(false);
                 } catch (error) {
@@ -31,6 +34,8 @@ const TokenPriceTracker = () => {
                     setError('Failed to fetch token price');
                     setLoading(false);
                 }
+            } else {
+                setLoading(false);
             }
         };
 

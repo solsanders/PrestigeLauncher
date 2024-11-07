@@ -5,7 +5,7 @@ const TokenPriceTracker = () => {
     const [agcPrice, setAgcPrice] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const FETCH_INTERVAL = 270000; // 4.5 minutes in milliseconds
+    const FETCH_INTERVAL = 600000; // 10 minutes
 
     useEffect(() => {
         const fetchPrice = async () => {

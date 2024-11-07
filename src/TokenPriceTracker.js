@@ -5,7 +5,7 @@ const TokenPriceTracker = () => {
     const [agcPrice, setAgcPrice] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const FETCH_INTERVAL = 600000; // 10 minutes
+    const FETCH_INTERVAL = 270000; // 4.5 minutes
     const lastFetchKey = 'lastFetchTimestamp';
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const TokenPriceTracker = () => {
             const now = Date.now();
             const lastFetch = localStorage.getItem(lastFetchKey);
 
-            // Check if cached data exists and is not older than 10 minutes
+            // Check if cached data exists and is not older than 4.5 minutes
             if (cachedData && now - cachedData.timestamp < FETCH_INTERVAL) {
                 setAgcPrice(cachedData.price);
                 setLoading(false);
@@ -40,7 +40,7 @@ const TokenPriceTracker = () => {
         };
 
         fetchPrice();
-        const interval = setInterval(fetchPrice, FETCH_INTERVAL); // Auto-refresh every 10 minutes
+        const interval = setInterval(fetchPrice, FETCH_INTERVAL); // Auto-refresh every 4.5 minutes
         return () => clearInterval(interval); // Clean up interval on component unmount
     }, []);
 

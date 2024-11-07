@@ -125,7 +125,7 @@ const createToken = async () => {
         });
         console.log("Token details saved to Firestore");
       }
-  
+      await refreshBalance();
     } catch (error) {
       console.error("Error creating token:", error);
     } finally {
@@ -135,8 +135,32 @@ const createToken = async () => {
   
 
 
+  const refreshBalance = async () => {
+    if (account) {
+        try {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const balance = await provider.getBalance(account);
+            const formattedBalance = ethers.formatUnits(balance, 18);
+            console.log("Updated AGC balance:", formattedBalance);
+            setAgcBalance(formattedBalance);
+        } catch (error) {
+            console.error("Failed to refresh AGC balance:", error);
+        }
+    }
+};
+
+            useEffect(() => {
+                if (account) {
+                    refreshBalance();
+                }
+            }, [account]);
 
 
+            useEffect(() => {
+                if (newTokenAddress) {
+                    refreshBalance();
+                }
+            }, [newTokenAddress]);
 
 
     const checkTokenBalance = async (tokenAddress, account) => {
@@ -176,6 +200,10 @@ const createToken = async () => {
         setError("Error checking contract balance: " + error.message);
     }
 };
+
+
+
+
 
 
     const withdrawFees = async () => {
@@ -266,7 +294,6 @@ return (
         )}
         
         {agcBalance && <p className="account-info">Your Balance: {agcBalance} AGC</p>}
-        {error && <p className="error">{error}</p>}
 
         <div className="token-form">
             {!newTokenAddress && (
@@ -378,7 +405,6 @@ return (
                             <p className="preview-description"><strong className="token-attribute">Description:</strong> <span className="attribute-text">{projectDescription}</span></p>
                         )}
                     </div>
-
                 </>
             )}
             {isLoading && (
@@ -449,8 +475,6 @@ return (
         )}
     </div>
 )};
-
-
 
 
 export default TokenFactory;

@@ -249,7 +249,7 @@ const createToken = async () => {
 
 
 
-        return (
+return (
     <div className="container">
         <h1>Argochain Token Launcher</h1>
         <p className="small-text">Made by PrestigeNode</p>
@@ -271,11 +271,11 @@ const createToken = async () => {
         <div className="token-form">
             {!newTokenAddress && (
                 <>
-                {/* Header Section */}
-<div className="form-header-container">
-    <h2 className="form-header">Create a New Token</h2>
-    <span className="fee-text">(Fee: 10 AGC)</span>
-</div>
+                    {/* Header Section */}
+                    <div className="form-header-container">
+                        <h2 className="form-header">Create a New Token</h2>
+                        <span className="fee-text">(Fee: 10 AGC)</span>
+                    </div>
 
                     <div className="form-row">
                         <div className="form-group">
@@ -307,12 +307,20 @@ const createToken = async () => {
                                 value={initialSupply}
                                 onChange={(e) => {
                                     const value = e.target.value;
-                                    const validInteger = /^[0-9]*$/; 
+                                    const validInteger = /^[0-9]*$/;
+                                    const MAX_SUPPLY = 1e12; // 1 trillion
+
                                     if (value === '' || validInteger.test(value)) {
+                                        if (Number(value) > MAX_SUPPLY) {
+                                            setError(`Token supply cannot exceed ${MAX_SUPPLY.toLocaleString()}`);
+                                        } else {
+                                            setError(''); // Clear error if valid
+                                        }
                                         setInitialSupply(value);
                                     }
                                 }}
                             />
+                            {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
                         </div>
                         
                         <div className="form-group">
@@ -360,11 +368,17 @@ const createToken = async () => {
                         </div>
                         {tokenName && <p><strong className="token-attribute">Name:</strong> <span className="attribute-text">{tokenName}</span></p>}
                         {tokenSymbol && <p><strong className="token-attribute">Symbol:</strong> <span className="attribute-text">{tokenSymbol}</span></p>}
-                        {initialSupply && <p><strong className="token-attribute">Supply:</strong> <span className="attribute-text">{initialSupply}</span></p>}
+                        {initialSupply && (
+                            <p>
+                                <strong className="token-attribute">Supply:</strong> 
+                                <span className="attribute-text">{Number(initialSupply).toLocaleString()}</span>
+                            </p>
+                        )}
                         {projectDescription && (
                             <p className="preview-description"><strong className="token-attribute">Description:</strong> <span className="attribute-text">{projectDescription}</span></p>
                         )}
                     </div>
+
                 </>
             )}
             {isLoading && (
@@ -434,7 +448,8 @@ const createToken = async () => {
             </div>
         )}
     </div>
-)}
+)};
+
 
 
 

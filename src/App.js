@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import TokenFactoryArtifact from './artifacts/contracts/TokenFactory.sol/TokenFactory.json';
 import './App.css'; 
 import TokenPriceTracker from './TokenPriceTracker';
+import CopyButton from './components/CopyButton'; 
 const ethers = require("ethers");
 
 const TokenFactory = () => {
@@ -256,9 +257,6 @@ const TokenFactory = () => {
 };
 
 
-
-
-
 return (
     <div className="container">
         {/* Live Token Price Tracker at the top center of the container */}
@@ -422,6 +420,7 @@ return (
                 <div className="attribute-wrapper">
                     <span className="token-attribute">Token Address:</span>
                     <span className="attribute-text"> {newTokenAddress}</span>
+                    {newTokenAddress && <CopyButton textToCopy={newTokenAddress} label="Token Address" />}
                 </div>
 
                 <div className="attribute-wrapper">
